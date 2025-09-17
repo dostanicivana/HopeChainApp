@@ -7,6 +7,8 @@ import { getContract } from "thirdweb";
 import { sepolia } from "thirdweb/chains";
 import { deployPublishedContract } from "thirdweb/deploys";
 import { useActiveAccount, useReadContract } from "thirdweb/react"
+import { Footer } from "@/app/components/Footer";
+import { Plus } from "lucide-react";
 
 export default function DashboardPage() {
     const account = useActiveAccount();
@@ -29,14 +31,34 @@ export default function DashboardPage() {
     return (
         <div className="mx-auto max-w-7xl px-4 mt-16 sm:px-6 lg:px-8">
             <div className="flex flex-row justify-between items-center mb-8">
-                <p className="text-4xl font-semibold">Dashboard</p>
+                {/* Dashboard Header */}
+                 <div>
+                    <h1 className="text-4xl font-bold text-foreground mb-2">
+                      Dashboard
+                    </h1>
+                    <p className="text-muted-foreground">
+                      Manage your humanitarian campaigns and make a difference
+                    </p>
+                </div>
                 <button
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                    className="flex items-center px-4 py-2 bg-red-500 text-white rounded-md"
                     onClick={() => setIsModalOpen(true)}
-                >Create Campaign</button>
+                 >  
+                    <Plus className="w-4 h-4 mr-2" /> 
+                          Create Campaign
+                </button>
             </div>
-            <p className="text-2xl font-semibold mb-4">My Campaigns:</p>
-            <div className="grid grid-cols-3 gap-4">
+             {/* My Campaigns Section */}
+       
+            <div className="flex items-center gap-3 mb-6">
+            <h2 className="text-2xl font-semibold text-foreground">
+                My Campaigns
+            </h2>
+            <div className="h-px bg-gray-300 flex-1"></div>
+            </div>
+
+           {/* <p className="text-2xl font-semibold mb-4">My Campaigns:</p> */}
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
                 {!isLoadingMyCampaigns && (
                     myCampaigns && myCampaigns.length > 0 ? (
                         myCampaigns.map((campaign, index) => (
@@ -87,13 +109,13 @@ const CreateCampaignModal = (
                 client: client,
                 chain: sepolia,
                 account: account!,
-                contractId: "CrowdfundingFactory", //mozda
+                contractId: "CrowdfundingFactory", // ili Crowdfunding
                contractParams: {
                       _name:campaignName,
                       _description:campaignDescription,
                       _goal:cpmgoal,
                       _deadline:cpmdeadline,
-                    //  _owner:client
+                    //  _owner:client    // ovde bi onda trebala adresa da bude 
                 },
                 publisher: "0x86fe0f6a6b1541a214965Ae8192164Eb327918b7",  // cobtract
                 version: "0.1.0",    // treba mi verzija
@@ -168,7 +190,7 @@ const CreateCampaignModal = (
                     </div>
 
                     <button
-                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+                        className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md"
                         onClick={handleDeployContract}
                     >{
                         isDeployingContract ? "Creating Campaign..." : "Create Campaign"
@@ -177,5 +199,7 @@ const CreateCampaignModal = (
                 </div>
             </div>
         </div>
+       
     )
+     
 }

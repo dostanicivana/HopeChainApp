@@ -8,10 +8,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+     
+      colors: {
+        primary: "#E63946",       // crvena (za akcente i dugmad)
+        secondary: "#1D3557",     // tamnoplava / tamna siva za tekst
+        accent: "#F1FAEE",        // svetla pozadina (skoro bela)
+        success: "#06D6A0",       // zelena (ikonice, statusi)
+        warning: "#FFB703",       // oranž (ikonice, highlight)
       },
     },
   },

@@ -4,18 +4,25 @@ import Link from "next/link";
 import { ConnectButton, lightTheme, useActiveAccount } from "thirdweb/react";
 import Image from 'next/image';
 import thirdwebIcon from "@public/thirdweb.svg";
+import { Heart, Menu, User } from "lucide-react";
+import { Button } from "@/app/components/ui/button";
+
 
 const Navbar = () => {
     const account = useActiveAccount();
 
-    return (
-        <nav className="bg-slate-100 border-b-2 border-b-slate-300">
+    return ( 
+        // bg-slate-100 → svetlo sivi background.border-b-2 → donja granica debljine 2px.border-b-slate-300 → boja te granice.
+        <nav className="bg-slate-100 border-b-2 border-b-slate-300"> 
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                 <div className="relative flex h-16 items-center justify-between">
                     <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                      
                         <button type="button" className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                       
                         <span className="absolute -inset-0.5"></span>
                         <span className="sr-only">Open main menu</span>
+
                         <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                         </svg>
@@ -24,30 +31,35 @@ const Navbar = () => {
                         </svg>
                         </button>
                     </div>
-                    <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                        <div className="flex flex-shrink-0 items-center">
-                            <Image 
-                                src={thirdwebIcon} 
-                                alt="Your Company" 
-                                width={32} 
-                                height={32} 
-                                style={{
-                                    filter: "drop-shadow(0px 0px 24px #a726a9a8)",
-                                }}
-                            />
+                   <div className="flex flex-1 items-center justify-between">
+                        {/* Logo */}
+                        <div className="flex items-center gap-2">
+                            <div className="bg-primary rounded-lg p-2">
+                            <Heart className="h-6 w-6 text-white" />
+                            </div>
+                            <div>
+                            <h1 className="font-bold text-xl text-foreground">HopeChain</h1>
+                            <p className="text-xs text-muted-foreground">Humanitarian Crowdfunding</p>
+                            </div>
                         </div>
+
                         <div className="hidden sm:ml-6 sm:block">
                             <div className="flex space-x-4">
                                 <Link
                                     href={'/'}
                                 >
-                                    <p className="rounded-md px-3 py-2 text-sm font-medium text-slate-700">Campaigns</p>
+                                    <p className="rounded-md px-3 py-2 text-sm font-medium text-slate-700">Campaigns</p>  
                                 </Link>
+
+                                 <Link href={'/about'}>
+                                      <p className="rounded-md px-3 py-2 text-sm font-medium text-slate-700">About</p>  
+                                 </Link>
+                                 
                                 {account && (
                                     <Link
                                         href={`/dashboard/${account?.address}`}
                                     >
-                                        <p className="rounded-md px-3 py-2 text-sm font-medium text-slate-700">Dashboard</p>
+                                        <p className="rounded-md px-3 py-2 text-sm font-medium text-slate-700">Dashboard</p> 
                                     </Link>
                                 )}
                             </div>

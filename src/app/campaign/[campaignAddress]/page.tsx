@@ -7,6 +7,8 @@ import { getContract, prepareContractCall, ThirdwebContract } from "thirdweb";
 import { sepolia } from "thirdweb/chains";
 import { lightTheme, TransactionButton, useActiveAccount, useReadContract } from "thirdweb/react";
 
+
+
 export default function CampaignPage() {
     const account = useActiveAccount();
     const { campaignAddress } = useParams();
@@ -106,7 +108,7 @@ export default function CampaignPage() {
                             </p>
                         )}
                         <button
-                            className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                            className="px-4 py-2 bg-red-500 text-white rounded-md"
                             onClick={() => setIsEditing(!isEditing)}
                         >{isEditing ? "Done" : "Edit"}</button>
                     </div>
@@ -126,7 +128,7 @@ export default function CampaignPage() {
                 <div className="mb-4">
                     <p className="text-lg font-semibold">Campaign Goal: ${goal?.toString()}</p>
                     <div className="relative w-full h-6 bg-gray-200 rounded-full dark:bg-gray-700">
-                        <div className="h-6 bg-blue-600 rounded-full dark:bg-blue-500 text-right" style={{ width: `${balancePercentage?.toString()}%`}}>
+                        <div className="h-6 bg-red-600 rounded-full dark:bg--500 text-right" style={{ width: `${balancePercentage?.toString()}%`}}>
                             <p className="text-white dark:text-white text-xs p-1">${balance?.toString()}</p>
                         </div>
                         <p className="absolute top-0 right-0 text-white dark:text-white text-xs p-1">
@@ -161,7 +163,7 @@ export default function CampaignPage() {
                     {isEditing && (
                         // Add a button card with text centered in the middle
                         <button
-                            className="max-w-sm flex flex-col text-center justify-center items-center font-semibold p-6 bg-blue-500 text-white border border-slate-100 rounded-lg shadow"
+                            className="max-w-sm flex flex-col text-center justify-center items-center font-semibold p-6 bg-red-500 text-white border border-slate-100 rounded-lg shadow"
                             onClick={() => setIsModalOpen(true)}
                         >+ Add Tier</button>
                     )}
