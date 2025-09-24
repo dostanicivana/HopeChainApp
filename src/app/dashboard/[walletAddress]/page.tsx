@@ -1,14 +1,20 @@
 'use client';
 import { client } from "@/app/client";
 import { CROWDFUNDING_FACTORY } from "@/app/constants/contracts";
+import CrowdfundingFactoryABI from "@/app/contracts/CrowdfundingFactory.json";
 import { MyCampaignCard } from "@/app/components/MyCampaignCard";
 import { useState } from "react";
-import { getContract } from "thirdweb";
+import { getContract, prepareContractCall } from "thirdweb";
 import { sepolia } from "thirdweb/chains";
 import { deployPublishedContract } from "thirdweb/deploys";
-import { useActiveAccount, useReadContract } from "thirdweb/react"
+import { useActiveAccount, useReadContract, useSendTransaction } from "thirdweb/react"
 import { Footer } from "@/app/components/Footer";
 import { Plus } from "lucide-react";
+import { Abi } from "viem"; 
+
+
+
+
 
 export default function DashboardPage() {
     const account = useActiveAccount();
@@ -88,7 +94,121 @@ type CreateCampaignModalProps = {
     refetch: () => void
 }
 
-const CreateCampaignModal = (
+export const CreateCampaignModal = ({
+  setIsModalOpen,
+  refetch,
+}: CreateCampaignModalProps) => {
+  const account = useActiveAccount();
+  const [campaignName, setCampaignName] = useState("");
+  const [campaignDescription, setCampaignDescription] = useState("");
+  const [campaignGoal, setCampaignGoal] = useState<number>(1);
+  const [campaignDeadline, setCampaignDeadline] = useState<number>(1);
+  const [isCreating, setIsCreating] = useState(false);
+
+  // contract instance
+  const contract = getContract({
+    client,
+    chain: sepolia,
+    address: CROWDFUNDING_FACTORY,
+    abi: CrowdfundingFactoryABI.abi as Abi,
+  });
+
+  const { mutate: sendTransaction } = useSendTransaction();
+
+  const handleCreateCampaign = async () => {
+    if (!account) {
+      alert("Connect your wallet first.");
+      return;
+    }
+    try {
+      setIsCreating(true);
+
+      const tx = prepareContractCall({
+        contract,
+        method:
+          "function createCampaign(string _name,string _description,uint256 _goal,uint256 _durationInDays)",
+        params: [
+          campaignName,
+          campaignDescription,
+          BigInt(campaignGoal),
+          BigInt(campaignDeadline),
+        ],
+      });
+
+      await sendTransaction(tx);
+
+      alert("Campaign created successfully ");
+      refetch();
+      setIsModalOpen(false);
+    } catch (err) {
+      console.error("Error creating campaign:", err);
+      alert("Something went wrong while creating campaign");
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center backdrop-blur-md">
+      <div className="w-1/2 bg-slate-100 p-6 rounded-md">
+        <div className="flex justify-between items-center mb-4">
+          <p className="text-lg font-semibold">Create a Campaign</p>
+          <button
+            className="text-sm px-4 py-2 bg-slate-600 text-white rounded-md"
+            onClick={() => setIsModalOpen(false)}
+          >
+            Close
+          </button>
+        </div>
+
+        <div className="flex flex-col">
+          <label>Campaign Name:</label>
+          <input
+            type="text"
+            value={campaignName}
+            onChange={(e) => setCampaignName(e.target.value)}
+            placeholder="Campaign Name"
+            className="mb-4 px-4 py-2 bg-slate-300 rounded-md"
+          />
+
+          <label>Campaign Description:</label>
+          <textarea
+            value={campaignDescription}
+            onChange={(e) => setCampaignDescription(e.target.value)}
+            placeholder="Campaign Description"
+            className="mb-4 px-4 py-2 bg-slate-300 rounded-md"
+          ></textarea>
+
+          <label>Campaign Goal (wei):</label>
+          <input
+            type="number"
+            value={campaignGoal}
+            onChange={(e) => setCampaignGoal(parseInt(e.target.value))}
+            className="mb-4 px-4 py-2 bg-slate-300 rounded-md"
+          />
+
+          <label>Campaign Length (days):</label>
+          <input
+            type="number"
+            value={campaignDeadline}
+            onChange={(e) => setCampaignDeadline(parseInt(e.target.value))}
+            className="mb-4 px-4 py-2 bg-slate-300 rounded-md"
+          />
+
+          <button
+            className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md"
+            onClick={handleCreateCampaign}
+            disabled={isCreating}
+          >
+            {isCreating ? "Creating Campaign..." : "Create Campaign"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/*const CreateCampaignModal = (
     { setIsModalOpen, refetch }: CreateCampaignModalProps
 ) => {
     const account = useActiveAccount();
@@ -200,6 +320,6 @@ const CreateCampaignModal = (
             </div>
         </div>
        
-    )
+    )*
      
-}
+}*/
