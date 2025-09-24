@@ -19,7 +19,7 @@ To run HopeChain, create a .env file in the root folder and add:
 CLIENT_ID = your_client_id_here
 ````
 
-For instructions on creating a client ID, refer to the Thirdweb documentation
+For instructions on creating a client ID, refer to the [Thirdweb documentation]([url](https://portal.thirdweb.com/typescript/v5/client))
 
 ## Running Locally
 
@@ -62,3 +62,4 @@ Web3 Interaction: Thirdweb SDK
 ## License
 
 MIT License
+
